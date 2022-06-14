@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище scheduleModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Departments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="Abbreviation" Type="nvarchar(max)" />
+    <Property Name="Address" Type="nvarchar(max)" />
+    <Property Name="Phone" Type="nvarchar(max)" />
+    <Property Name="Website" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Posts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Staffs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DepartmentId" Type="int" Nullable="false" />
+    <Property Name="PostId" Type="int" Nullable="false" />
+    <Property Name="TeacherId" Type="int" Nullable="false" />
+    <Property Name="Rate" Type="int" Nullable="false" />
+    <Property Name="Condition" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="Teachers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Surname" Type="nvarchar(max)" />
+    <Property Name="Name" Type="nvarchar(max)" />
+    <Property Name="Patronymic" Type="nvarchar(max)" />
+    <Property Name="Datebirth" Type="datetime" Nullable="false" />
+    <Property Name="Phone" Type="nvarchar(max)" />
+    <Property Name="Degree" Type="nvarchar(max)" />
+    <Property Name="Title" Type="nvarchar(max)" />
+    <Property Name="Address" Type="nvarchar(max)" />
+  </EntityType>
+  <Association Name="FK_dbo_Staffs_dbo_Departments_DepartmentId">
+    <End Role="Departments" Type="Self.Departments" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Staffs" Type="Self.Staffs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Departments">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Staffs">
+        <PropertyRef Name="DepartmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Staffs_dbo_Posts_PostId">
+    <End Role="Posts" Type="Self.Posts" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Staffs" Type="Self.Staffs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Staffs">
+        <PropertyRef Name="PostId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Staffs_dbo_Teachers_TeacherId">
+    <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Staffs" Type="Self.Staffs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teachers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Staffs">
+        <PropertyRef Name="TeacherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище scheduleModelContainer">
+    <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Posts" EntityType="Self.Posts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Staffs" EntityType="Self.Staffs" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Teachers" EntityType="Self.Teachers" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_dbo_Staffs_dbo_Departments_DepartmentId" Association="Self.FK_dbo_Staffs_dbo_Departments_DepartmentId">
+      <End Role="Departments" EntitySet="Departments" />
+      <End Role="Staffs" EntitySet="Staffs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Staffs_dbo_Posts_PostId" Association="Self.FK_dbo_Staffs_dbo_Posts_PostId">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="Staffs" EntitySet="Staffs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Staffs_dbo_Teachers_TeacherId" Association="Self.FK_dbo_Staffs_dbo_Teachers_TeacherId">
+      <End Role="Teachers" EntitySet="Teachers" />
+      <End Role="Staffs" EntitySet="Staffs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

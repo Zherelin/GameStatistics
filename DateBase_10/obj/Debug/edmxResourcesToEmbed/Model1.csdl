@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="scheduleModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Departments">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Abbreviation" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Website" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Staffs" Relationship="Self.FK_dbo_Staffs_dbo_Departments_DepartmentId" FromRole="Departments" ToRole="Staffs" />
+  </EntityType>
+  <EntityType Name="Posts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Staffs" Relationship="Self.FK_dbo_Staffs_dbo_Posts_PostId" FromRole="Posts" ToRole="Staffs" />
+  </EntityType>
+  <EntityType Name="Staffs">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DepartmentId" Type="Int32" Nullable="false" />
+    <Property Name="PostId" Type="Int32" Nullable="false" />
+    <Property Name="TeacherId" Type="Int32" Nullable="false" />
+    <Property Name="Rate" Type="Int32" Nullable="false" />
+    <Property Name="Condition" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Departments" Relationship="Self.FK_dbo_Staffs_dbo_Departments_DepartmentId" FromRole="Staffs" ToRole="Departments" />
+    <NavigationProperty Name="Posts" Relationship="Self.FK_dbo_Staffs_dbo_Posts_PostId" FromRole="Staffs" ToRole="Posts" />
+    <NavigationProperty Name="Teachers" Relationship="Self.FK_dbo_Staffs_dbo_Teachers_TeacherId" FromRole="Staffs" ToRole="Teachers" />
+  </EntityType>
+  <EntityType Name="Teachers">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Surname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Patronymic" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Datebirth" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Phone" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Degree" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Staffs" Relationship="Self.FK_dbo_Staffs_dbo_Teachers_TeacherId" FromRole="Teachers" ToRole="Staffs" />
+  </EntityType>
+  <Association Name="FK_dbo_Staffs_dbo_Departments_DepartmentId">
+    <End Role="Departments" Type="Self.Departments" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Staffs" Type="Self.Staffs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Departments">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Staffs">
+        <PropertyRef Name="DepartmentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Staffs_dbo_Posts_PostId">
+    <End Role="Posts" Type="Self.Posts" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Staffs" Type="Self.Staffs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Posts">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Staffs">
+        <PropertyRef Name="PostId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_Staffs_dbo_Teachers_TeacherId">
+    <End Role="Teachers" Type="Self.Teachers" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Staffs" Type="Self.Staffs" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teachers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Staffs">
+        <PropertyRef Name="TeacherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="scheduleEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Departments" EntityType="Self.Departments" />
+    <EntitySet Name="Posts" EntityType="Self.Posts" />
+    <EntitySet Name="Staffs" EntityType="Self.Staffs" />
+    <EntitySet Name="Teachers" EntityType="Self.Teachers" />
+    <AssociationSet Name="FK_dbo_Staffs_dbo_Departments_DepartmentId" Association="Self.FK_dbo_Staffs_dbo_Departments_DepartmentId">
+      <End Role="Departments" EntitySet="Departments" />
+      <End Role="Staffs" EntitySet="Staffs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Staffs_dbo_Posts_PostId" Association="Self.FK_dbo_Staffs_dbo_Posts_PostId">
+      <End Role="Posts" EntitySet="Posts" />
+      <End Role="Staffs" EntitySet="Staffs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_Staffs_dbo_Teachers_TeacherId" Association="Self.FK_dbo_Staffs_dbo_Teachers_TeacherId">
+      <End Role="Teachers" EntitySet="Teachers" />
+      <End Role="Staffs" EntitySet="Staffs" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
